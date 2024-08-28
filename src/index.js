@@ -14,7 +14,7 @@ import supportWebpack4 from "./supportWebpack4";
 import {
   getDefaultFilename,
   getDefaultChunkFilename,
-  getExternalsType,
+  // getExternalsType,
 } from "./utils";
 
 let FetchCompileWasmPlugin;
@@ -86,12 +86,12 @@ export function pitch(request) {
     new FetchCompileAsyncWasmPlugin().apply(workerContext.compiler);
   }
 
-  if (compilerOptions.externals) {
-    new ExternalsPlugin(
-      getExternalsType(compilerOptions),
-      compilerOptions.externals
-    ).apply(workerContext.compiler);
-  }
+  // if (compilerOptions.externals) {
+  //   new ExternalsPlugin(
+  //     getExternalsType(compilerOptions),
+  //     compilerOptions.externals
+  //   ).apply(workerContext.compiler);
+  // }
 
   new SingleEntryPlugin(
     this.context,
