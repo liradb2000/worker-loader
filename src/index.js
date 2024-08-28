@@ -6,7 +6,7 @@ import { validate } from "schema-utils";
 import NodeTargetPlugin from "webpack/lib/node/NodeTargetPlugin";
 import SingleEntryPlugin from "webpack/lib/SingleEntryPlugin";
 import WebWorkerTemplatePlugin from "webpack/lib/webworker/WebWorkerTemplatePlugin";
-import ExternalsPlugin from "webpack/lib/ExternalsPlugin";
+// import ExternalsPlugin from "webpack/lib/ExternalsPlugin";
 
 import schema from "./options.json";
 import supportWebpack5 from "./supportWebpack5";
