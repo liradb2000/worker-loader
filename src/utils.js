@@ -1,5 +1,3 @@
-import { stringifyRequest } from "loader-utils";
-
 function getDefaultFilename(filename) {
   if (typeof filename === "function") {
     return filename;
@@ -46,43 +44,7 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
     ({ type: workerConstructor, options: workerOptions } = options.worker);
   }
 
-  const esModule =
-    typeof options.esModule !== "undefined" ? options.esModule : true;
-  const fnName = `${workerConstructor}_fn`;
-
-  if (options.inline) {
-    const InlineWorkerPath = stringifyRequest(
-      loaderContext,
-      `!!${require.resolve("./runtime/inline.js")}`
-    );
-
-    let fallbackWorkerPath;
-
-    if (options.inline === "fallback") {
-      fallbackWorkerPath = `__webpack_public_path__ + ${JSON.stringify(
-        workerFilename
-      )}`;
-    }
-
-    return `
-${
-  esModule
-    ? `import worker from ${InlineWorkerPath};`
-    : `var worker = require(${InlineWorkerPath});`
-}
-
-${
-  esModule ? "export default" : "module.exports ="
-} function ${fnName}() {\n  return worker(${JSON.stringify(
-      workerSource
-    )}, ${JSON.stringify(workerConstructor)}, ${JSON.stringify(
-      workerOptions
-    )}, ${fallbackWorkerPath});\n}\n`;
-  }
-
-  return `${
-    esModule ? "export default" : "module.exports ="
-  } function ${fnName}() {\n  return new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
+  return `export default function() {\n  return new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
     workerFilename
   )}${workerOptions ? `, ${JSON.stringify(workerOptions)}` : ""});\n}\n`;
 }
