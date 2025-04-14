@@ -62,6 +62,11 @@
       "description": "Allow to inline the worker as a BLOB.",
       "link": "https://github.com/webpack-contrib/worker-loader#inline"
     },
+    "forceInline": {
+      "type": "boolean",
+      "description": "set inline mode force",
+      "link": ""
+    },
     "esModule": {
       "type": "boolean",
       "description": "Enable or disable ES module syntax.",
