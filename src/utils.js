@@ -55,7 +55,7 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
     export default function() {
       return worker(${JSON.stringify(
         workerSource
-      )}, ${workerConstructor}, ${JSON.stringify(
+      )}, '${workerConstructor}', ${JSON.stringify(
       workerOptions
     )}, __webpack_public_path__ + ${JSON.stringify(workerFilename)});
 }\n`;
