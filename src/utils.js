@@ -1,3 +1,5 @@
+import { stringifyRequest } from "loader-utils";
+
 function getDefaultFilename(filename) {
   if (typeof filename === "function") {
     return filename;
@@ -43,10 +45,27 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
   } else {
     ({ type: workerConstructor, options: workerOptions } = options.worker);
   }
+  if (options.forceInline) {
+    const InlineWorkerPath = stringifyRequest(
+      loaderContext,
+      `!!${require.resolve("./runtime/inline.js")}`
+    );
 
-  return `export default function() {\n  return new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
+    return `import worker from ${InlineWorkerPath};
+    export default function() {
+      return worker(${JSON.stringify(
+        workerSource
+      )}, ${workerConstructor}, ${JSON.stringify(
+      workerOptions
+    )}, __webpack_public_path__ + ${JSON.stringify(workerFilename)});
+}\n`;
+  }
+
+  return `export default function() {
+    return new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
     workerFilename
-  )}${workerOptions ? `, ${JSON.stringify(workerOptions)}` : ""});\n}\n`;
+  )}${workerOptions ? `, ${JSON.stringify(workerOptions)}` : ""});
+}\n`;
 }
 
 // Matches only the last occurrence of sourceMappingURL
